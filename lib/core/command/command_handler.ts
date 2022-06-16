@@ -1,15 +1,13 @@
-import {isJidGroup, WAMessage, WASocket} from "@adiwajshing/baileys";
+import { WASocket} from "@adiwajshing/baileys";
 import { assert } from "console";
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 import MessageModel from "../../database/models/message_model";
 import {ListenerHandler} from "../listener/listener_handler";
-import { getUserPrivilegeLevel } from "../../utils/group_utils";
 import { command_prefix } from "../config";
 import {ICommand} from "./command";
 import CommandListener from "./command_listener";
 
 export class CommandHandler {
-  private commands: Array<ICommand> = [];
+  public commands: Array<ICommand> = [];
   protected client?: WASocket;
   private registeredListener = false;
 
@@ -40,6 +38,8 @@ export class CommandHandler {
     const bl = new Set(blacklist);
 
     this.commands.forEach((command) => {
+      if (!command.command) return;
+
       if (text.startsWith(command.command) && !bl.has(command.command)) {
         commands.push(command);
       }
@@ -52,6 +52,7 @@ export class CommandHandler {
     assert(this.client, "this.client must be set through setClient(client: WASocket)");
 
     for (const command of commands) {
+      if (!command.command) continue;
       if (!(await command.hasPermission(message))) continue;
 
       const body = message?.content?.slice(this.prefix.length + command.command.length + 1);
@@ -65,5 +66,9 @@ export class CommandHandler {
 
   public setClient(client: WASocket) {
     this.client = client;
+  }
+
+  public get commandPrefix() {
+    return this.prefix;
   }
 }

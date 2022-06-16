@@ -86,7 +86,7 @@ export default abstract class Privileged {
         }
         
 
-        const user = await userRepository.getUser(message.sender, message.raw?.pushName ?? undefined);
+        const user = await userRepository.getUser(message.sender);
         if (!user && this.privilegeLevel > 0 || (user?.model.privilegeLevel ?? 0) < this.privilegeLevel) {
             await this.onFailedPermission(message, Permission.PrivilegeLevel, user);
             return false;

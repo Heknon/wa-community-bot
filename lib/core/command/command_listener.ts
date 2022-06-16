@@ -1,4 +1,4 @@
-import { proto, WASocket } from "@adiwajshing/baileys";
+import { WASocket } from "@adiwajshing/baileys";
 import MessageModel from "../../database/models/message_model";
 import { IListener } from "../listener/listener";
 import { getMessageBody } from "../../utils/message_utils";
