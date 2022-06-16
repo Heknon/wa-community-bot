@@ -4,7 +4,7 @@ import { connectToDatabase } from "./database";
 import { userCommandHandler, listenerHandler, messagingService, userRepository } from "./constants/services";
 import JIDCommand from "./command/jid_command";
 import TestCommand from "./command/test_command";
-import UserCreatorListener from "./user/user_creator_listener";
+import UserUpdaterListener from "./user/user_creator_listener";
 
 export const whatsappBot: WhatsAppBot = new WhatsAppBot("./session", registerEventHandlers);
 connectToDatabase();
@@ -21,7 +21,6 @@ registerCommands();
 function registerEventHandlers(eventListener: BaileysEventEmitter, bot: WhatsAppBot) {
   eventListener?.on("messages.upsert", async (chats) => {
     for (const message of chats.messages) {
-      if (whatsappBot.client?.processMessage)
       if (message.message?.protocolMessage) return;
 
       if (message?.key?.participant?.includes(":") ?? false) {
@@ -37,7 +36,7 @@ function registerEventHandlers(eventListener: BaileysEventEmitter, bot: WhatsApp
 }
 
 function registerListeners() {
-  listenerHandler.registerListener(new UserCreatorListener(userRepository));
+  listenerHandler.registerListener(new UserUpdaterListener(userRepository));
 }
 
 function registerCommands() {

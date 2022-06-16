@@ -5,6 +5,7 @@
  */
 export enum PrivilegeLevel {
     User,
+    Membership,
     Moderator,
     Admin,
     Operator

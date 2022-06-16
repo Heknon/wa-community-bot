@@ -73,8 +73,7 @@ export default class MessageModel {
             getMessageBodyRaw(message),
             await getMessageMediaBuffer(message),
             getMessageMediaType(message),
-            message.message?.extendedTextMessage?.contextInfo?.quotedMessage != undefined ?
-                await this.fromWAMessage(quoted!) : undefined,
+            quoted ? await MessageModel.fromWAMessage(quoted) : undefined,
             from!,
             to!,
             metadata,

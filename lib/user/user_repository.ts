@@ -1,4 +1,4 @@
-import { jidDecode, jidEncode, WASocket } from "@adiwajshing/baileys";
+import { isJidUser, jidDecode, jidEncode, WASocket } from "@adiwajshing/baileys";
 import { ObjectId } from "mongodb";
 import { usersCollection } from "../database";
 import ContactModel from "../database/models/user/contact_model";
@@ -10,13 +10,19 @@ export default class UserRepository {
     private users: Map<string, User> = new Map();
 
     public async getUser(jid: string, pushName: string | undefined = undefined, update: boolean = false, create: boolean = true): Promise<User | undefined | null> {
+        if (!isJidUser(jid)) return;
+        
         let user: User | undefined | null = this.users[jid];
 
         if (update || !user) {
             user = await this.fetchUser(jid)
 
             if (!user && create) {
-                user = await this.createBasicUser(jid, pushName);
+                try {
+                    user = await this.createBasicUser(jid, pushName);
+                } catch (e) {
+                    user = await this.fetchUser(jid);
+                }
             }
         }
 

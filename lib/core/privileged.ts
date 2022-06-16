@@ -77,7 +77,7 @@ export default abstract class Privileged {
             }
         }
 
-        if (isJidGroup(message.to)) {
+        if (isJidGroup(message.to) && this.groupPrivilegeLevel > 0) {
             const level = await getUserPrivilegeLevel(whatsappBot.client!, message.to, message.from);
             if (level < this.groupPrivilegeLevel) {
                 await this.onFailedPermission(message, Permission.GroupPrivilegeLevel, level);

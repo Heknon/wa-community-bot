@@ -13,16 +13,17 @@ export function getQuotedMessageRaw(message?: WAMessage) {
     if (!contextInfo) return;
 
     let quoted = generateWAMessageFromContent(
-        contextInfo?.remoteJid ?? contextInfo.participant!, contextInfo?.quotedMessage!,
+        contextInfo?.remoteJid || contextInfo.participant!, contextInfo?.quotedMessage!,
         { messageId: contextInfo?.stanzaId!, userJid: contextInfo?.participant! }
     )
+
     quoted.key = {
         'fromMe': contextInfo?.participant! == WhatsAppBot.currentClientId,
         'id': contextInfo?.stanzaId!,
         'participant': contextInfo?.participant!,
-        'remoteJid': contextInfo.remoteJid,
+        'remoteJid': message?.key.remoteJid,
     }
-    
+
     return quoted;
 }
 
@@ -35,13 +36,13 @@ export function getContextInfoRaw(message?: WAMessage) {
     if (!content) return;
 
     return [content.extendedTextMessage?.contextInfo, content.imageMessage?.contextInfo,
-        content.videoMessage?.contextInfo, content.stickerMessage?.contextInfo,
-        content.audioMessage?.contextInfo, content.documentMessage?.contextInfo,
-        content.contactMessage?.contextInfo, content.contactsArrayMessage?.contextInfo,
-        content.buttonsResponseMessage?.contextInfo, content.templateButtonReplyMessage?.contextInfo,
-        content.listResponseMessage?.contextInfo, content.locationMessage?.contextInfo,
-        content.liveLocationMessage?.contextInfo, content.templateMessage?.contextInfo,
-        content.buttonsMessage?.contextInfo, content.listMessage?.contextInfo].filter(e => e?.quotedMessage)[0];
+    content.videoMessage?.contextInfo, content.stickerMessage?.contextInfo,
+    content.audioMessage?.contextInfo, content.documentMessage?.contextInfo,
+    content.contactMessage?.contextInfo, content.contactsArrayMessage?.contextInfo,
+    content.buttonsResponseMessage?.contextInfo, content.templateButtonReplyMessage?.contextInfo,
+    content.listResponseMessage?.contextInfo, content.locationMessage?.contextInfo,
+    content.liveLocationMessage?.contextInfo, content.templateMessage?.contextInfo,
+    content.buttonsMessage?.contextInfo, content.listMessage?.contextInfo].filter(e => e?.quotedMessage)[0];
 }
 
 export function getMessageBody(message?: MessageModel) {
@@ -49,12 +50,12 @@ export function getMessageBody(message?: MessageModel) {
 }
 
 export function getMessageBodyRaw(message?: WAMessage) {
-    const content = extractMessageContent(message?.message);
+    const content = message?.message;
     if (!content) return;
 
-    let result = content.conversation ?? content.extendedTextMessage?.text
-        ?? content.imageMessage?.caption ?? content.videoMessage?.caption
-        ?? content.buttonsResponseMessage?.selectedDisplayText ?? content.templateButtonReplyMessage?.selectedDisplayText;
+    let result = content.conversation || content.extendedTextMessage?.text
+        || content.imageMessage?.caption || content.videoMessage?.caption
+        || content.buttonsResponseMessage?.selectedDisplayText || content.templateButtonReplyMessage?.selectedDisplayText;
 
     if (!result) {
         if (content.listResponseMessage) {

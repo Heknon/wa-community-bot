@@ -10,7 +10,7 @@ import { PrivilegeLevel } from "../database/models/user/privilege_level";
 
 export default class TestCommand extends ICommand {
     command: string = "test";
-    privilegeLevel = PrivilegeLevel.Moderator;
+    privilegeLevel = PrivilegeLevel.Admin;
 
     async execute(client: WASocket, message: MessageModel, body?: string) {
         if (!message.raw?.key.remoteJid) return;
@@ -24,7 +24,7 @@ export default class TestCommand extends ICommand {
         const templateButtons = [
             { index: 1, urlButton: { displayText: '⭐ Star Baileys on GitHub!', url: 'https://github.com/adiwajshing/Baileys' } },
             { index: 2, callButton: { displayText: 'Call me!', phoneNumber: '+1 (234) 5678-901' } },
-            { index: 3, quickReplyButton: { displayText: 'This is a reply, just like normal buttons!', id: 'id-like-buttons-message' } },
+            { index: 3, quickReplyButton: { displayText: '>>jid', id: 'id-like-buttons-message' } },
         ]
 
         const buttonMessage: AnyMessageContent = {
@@ -69,10 +69,10 @@ export default class TestCommand extends ICommand {
             templateButtons,
         }
 
-        // await messagingService.replyAdvanced(message, buttonMessage)
+        await messagingService.replyAdvanced(message, buttonMessage)
 
 
-        // await messagingService.replyAdvanced(message, buttonMessage3)
+        await messagingService.replyAdvanced(message, buttonMessage2)
 
         await messagingService.replyAdvanced(message, listMessage)
     }
