@@ -19,6 +19,8 @@ import GroupUpdaterListener from "./group/group_creator_listener";
 import AnonymousCommand from "./command/fun/anonymous_command";
 import CreatorCommand from "./command/info/creator_command";
 import KickCommand from "./command/groups/admin/kick_command";
+import AddCommand from "./command/groups/admin/add_command";
+import SpoofCommand from "./command/fun/spoof_command";
 ffmpeg.setFfmpegPath(ffmpegPath);
 dotenv.config();
 
@@ -44,7 +46,7 @@ function registerEventHandlers(eventListener: BaileysEventEmitter, bot: WhatsApp
       }
 
       const msgModel = await messagingService.messageInterceptor(message);
-      
+
       const listeners = await listenerHandler.findListeners(msgModel);
       await listenerHandler.executeListeners(msgModel, ...listeners);
     }
@@ -92,6 +94,8 @@ function registerCommands() {
   userCommandHandler.registerCommand(new CreatorCommand());
   userCommandHandler.registerCommand(new AnonymousCommand());
   userCommandHandler.registerCommand(new KickCommand());
+  userCommandHandler.registerCommand(new AddCommand());
+  userCommandHandler.registerCommand(new SpoofCommand());
   userCommandHandler.registerCommand(new HelpCommand(userCommandHandler));
 }
 
