@@ -23,17 +23,15 @@ export default class PromoteCommand extends ICommand {
         if (!level) {
             let enumKeys = Object.keys(PrivilegeLevel);
             enumKeys = enumKeys.slice(enumKeys.length / 2)
-            const enumValues = Object.values(PrivilegeLevel);
 
             const privilegesText = Array.from(Array(enumKeys.length).keys())
-                .map((key) => `*${enumValues[key]}*. ${enumKeys[key]}`).join('\n');
+                .map((key) => `*${key}*. ${enumKeys[key]}`).join('\n');
             return messagingService.reply(message, `Please provide the privilege level the users should be promoted to.\n\n${privilegesText}`, true)
         }
 
         const mentionedSet = new Set<string>();
-        const mentioned: string[] = [];
         (message.raw?.message?.extendedTextMessage?.contextInfo?.mentionedJid ?? []).forEach((mention: string) => mentionedSet.add(mention))
-        if (mentioned.length === 0) {
+        if (mentionedSet.size === 0) {
             return messagingService.reply(message, "Please tag those you want to promote.");
         }
 
