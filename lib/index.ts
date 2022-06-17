@@ -8,6 +8,8 @@ import UserUpdaterListener from "./user/user_creator_listener";
 import StickerCommand from "./command/fun/sticker_command";
 import HelpCommand from "./command/info/help_command";
 import MP3Command from "./command/fun/mp3_command";
+import GptCommand from "./command/info/gpt_command";
+import LmgtfyCommand from "./command/fun/lmgtfy_command";
 
 export const whatsappBot: WhatsAppBot = new WhatsAppBot("./session", registerEventHandlers);
 connectToDatabase();
@@ -47,6 +49,8 @@ function registerCommands() {
   userCommandHandler.registerCommand(new TestCommand());
   userCommandHandler.registerCommand(new StickerCommand());
   userCommandHandler.registerCommand(new MP3Command());
+  userCommandHandler.registerCommand(new GptCommand());
+  userCommandHandler.registerCommand(new LmgtfyCommand());
   userCommandHandler.registerCommand(new HelpCommand(userCommandHandler));
 }
 

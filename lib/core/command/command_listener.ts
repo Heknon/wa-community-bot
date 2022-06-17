@@ -18,7 +18,7 @@ export default class CommandListener extends IListener {
   }
 
   async execute(client: WASocket, message: MessageModel): Promise<void> {
-    const body = getMessageBody(message);
+    const body = getMessageBody(message)?.toLowerCase();
     const commandText = body?.substring(command_prefix.length).toLowerCase().trimEnd();
     if (!commandText) return;
 
