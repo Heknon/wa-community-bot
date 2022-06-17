@@ -22,6 +22,7 @@ import KickCommand from "./command/groups/admin/kick_command";
 import AddCommand from "./command/groups/admin/add_command";
 import SpoofCommand from "./command/fun/spoof_command";
 import EveryoneTaggerListener from "./listener/everyone_tagger_listener";
+import PromoteCommand from "./command/admin/promote_command";
 ffmpeg.setFfmpegPath(ffmpegPath);
 dotenv.config();
 
@@ -81,7 +82,7 @@ function registerEventHandlers(eventListener: BaileysEventEmitter, bot: WhatsApp
 function registerListeners() {
   listenerHandler.registerListener(new UserUpdaterListener(userRepository));
   listenerHandler.registerListener(new GroupUpdaterListener(groupRepository));
-  
+
   listenerHandler.registerListener(new EveryoneTaggerListener());
 }
 
@@ -99,6 +100,7 @@ function registerCommands() {
   userCommandHandler.registerCommand(new KickCommand());
   userCommandHandler.registerCommand(new AddCommand());
   userCommandHandler.registerCommand(new SpoofCommand());
+  userCommandHandler.registerCommand(new PromoteCommand());
   userCommandHandler.registerCommand(new HelpCommand(userCommandHandler));
 }
 
