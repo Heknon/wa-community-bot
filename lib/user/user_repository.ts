@@ -52,6 +52,7 @@ export default class UserRepository {
         if (pushName) update['name'] = pushName;
         if (privilegeLevel) update['privilege_level'] = privilegeLevel;
         if (sentDisclaimer) update['sent_disclaimer'] = sentDisclaimer;
+        if (!update) return this.users[jid];
         
         const res = await usersCollection.findOneAndUpdate({ jid }, { "$set": update }, { returnDocument: ReturnDocument.AFTER });
         if (res.ok) {

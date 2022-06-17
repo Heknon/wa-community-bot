@@ -66,10 +66,15 @@ export default class MessagingService {
     private async _internalSendMessage(recipient: string, content: AnyMessageContent, options?: MiscMessageGenerationOptions, metadata?: MessageMetadata): Promise<MessageModel> {
         assert(this.client, "Client must be set using setClient() method!");
 
-        const response = await this.client!.sendMessage(recipient, content, options);
+        try {
+            const response = await this.client!.sendMessage(recipient, content, options);
 
-        if (this.metadataEnabled) this.metadataAssignment[response.key.id!] = metadata;
-        return MessageModel.fromWAMessage(response, metadata);
+            if (this.metadataEnabled) this.metadataAssignment[response.key.id!] = metadata;
+            return MessageModel.fromWAMessage(response, metadata);
+        } catch (err) {
+            const response = await this.client!.sendMessage(recipient, {'text': "An error occurred while sending the message."}, options);
+            return MessageModel.fromWAMessage(response, metadata);
+        }
     }
 
 
