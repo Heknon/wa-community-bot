@@ -1,4 +1,4 @@
-import { GroupMetadataParticipants, isJidGroup, proto, WASocket } from "@adiwajshing/baileys";
+import { isJidGroup, WASocket } from "@adiwajshing/baileys";
 import { messagingService } from "../../../constants/services";
 import { ICommand } from "../../../core/command/command";
 import MessageModel from "../../../database/models/message_model";

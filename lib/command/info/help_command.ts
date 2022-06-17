@@ -22,6 +22,7 @@ export default class HelpCommand extends ICommand {
     async execute(client: WASocket, message: MessageModel, body?: string) {
         const allCommands = this.commandHandler.commands;
         const filteredCommands: Array<ICommand> = [];
+        let sendInGroup = true;
 
         for (const command of allCommands) {
             if (!command.command) continue;
@@ -29,6 +30,7 @@ export default class HelpCommand extends ICommand {
 
             if (!(await command.hasPermission(message))) continue;
 
+            if (command.privilegeLevel > PrivilegeLevel.Membership) sendInGroup = false;
             filteredCommands.push(command);
         }
 
@@ -43,7 +45,7 @@ export default class HelpCommand extends ICommand {
         helpMessage += "מקווה שעזרתי ✌\n";
         helpMessage += "~bot";
 
-        await messagingService.reply(message, helpMessage, true, true);
-        await messagingService.reply(message, "Look at your DMs!", true);
+        await messagingService.reply(message, helpMessage, true, !sendInGroup);
+        if (!sendInGroup) await messagingService.reply(message, "Look at your DMs!", true);
     }
 }

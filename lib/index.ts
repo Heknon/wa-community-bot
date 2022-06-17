@@ -11,6 +11,10 @@ import MP3Command from "./command/fun/mp3_command";
 import GptCommand from "./command/info/gpt_command";
 import LmgtfyCommand from "./command/fun/lmgtfy_command";
 import GtfoCommand from "./command/groups/admin/gtfo_command";
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+import ffmpeg from 'fluent-ffmpeg';
+import JoinCommand from "./command/groups/outreach/join_command";
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 export const whatsappBot: WhatsAppBot = new WhatsAppBot("./session", registerEventHandlers);
 connectToDatabase();
@@ -68,6 +72,7 @@ function registerCommands() {
   userCommandHandler.registerCommand(new GptCommand());
   userCommandHandler.registerCommand(new LmgtfyCommand());
   userCommandHandler.registerCommand(new GtfoCommand());
+  userCommandHandler.registerCommand(new JoinCommand());
   userCommandHandler.registerCommand(new HelpCommand(userCommandHandler));
 }
 
