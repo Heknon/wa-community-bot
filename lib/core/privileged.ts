@@ -1,6 +1,7 @@
 import { isJidGroup, isJidUser, WAMessage } from "@adiwajshing/baileys";
 import { whatsappBot } from "..";
-import { userRepository } from "../constants/services";
+import { groupRepository, userRepository } from "../constants/services";
+import { GroupMembershipLevel } from "../database/models/group_membership_type";
 import MessageModel from "../database/models/message_model";
 import { PrivilegeLevel } from "../database/models/user/privilege_level";
 import { GroupPrivilegeLevel } from "../database/models/whatsapp/group_privilege_level";
@@ -21,6 +22,11 @@ export default abstract class Privileged {
      * privilege level in the database
      */
     privilegeLevel: PrivilegeLevel = 0;
+
+    /**
+     * privilege level in the database
+     */
+    groupMembershipLevel: GroupMembershipLevel = 0;
 
     /**
      * Allow processing in group chats
@@ -84,12 +90,20 @@ export default abstract class Privileged {
                 return false;
             }
         }
-        
+
 
         const user = await userRepository.getUser(message.sender);
         if (!user && this.privilegeLevel > 0 || (user?.model.privilegeLevel ?? 0) < this.privilegeLevel) {
             await this.onFailedPermission(message, Permission.PrivilegeLevel, user);
             return false;
+        }
+
+        if (isJidGroup(message.to)) {
+            const group = await groupRepository.getGroup(message.to);
+            if ((group?.model.membership ?? 0) < this.groupMembershipLevel) {
+                await this.onFailedPermission(message, Permission.GroupMembershipLevel, group);
+                return false;
+            }
         }
 
         return true;
@@ -100,6 +114,7 @@ export enum Permission {
     AllowGroups,
     AllowPMs,
     PrivilegeLevel,
+    GroupMembershipLevel,
     GroupPrivilegeLevel,
     Blacklist,
     MessageNeeded

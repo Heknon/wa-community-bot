@@ -1,7 +1,7 @@
 import { WhatsAppBot } from "./whatsapp_bot";
 import { BaileysEventEmitter } from "@adiwajshing/baileys";
 import { connectToDatabase } from "./database";
-import { userCommandHandler, listenerHandler, messagingService, userRepository } from "./constants/services";
+import { userCommandHandler, listenerHandler, messagingService, groupRepository, userRepository } from "./constants/services";
 import JIDCommand from "./command/admin/jid_command";
 import TestCommand from "./command/admin/test_command";
 import UserUpdaterListener from "./user/user_creator_listener";
@@ -14,6 +14,7 @@ import GtfoCommand from "./command/groups/admin/gtfo_command";
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 import ffmpeg from 'fluent-ffmpeg';
 import JoinCommand from "./command/groups/outreach/join_command";
+import GroupUpdaterListener from "./group/group_creator_listener";
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 export const whatsappBot: WhatsAppBot = new WhatsAppBot("./session", registerEventHandlers);
@@ -45,23 +46,33 @@ function registerEventHandlers(eventListener: BaileysEventEmitter, bot: WhatsApp
   });
 
   eventListener?.on("groups.upsert", async (groupMetas) => {
-    const joinMessage = "**Disclaimer**\n\
-    This bot is handled and managed by Ori Harel.\n\
-    As such, he poses the ability to see the messages in this group chat.\n\
-    He does not plan to but the possibility is there.\n\
-    If you are not keen with this, please remove the bot.\n\n\
-    You can remove the bot by having a group admin send:\n\
-    >>gtfo\n\
-    Enjoy my bot! Get started using: >>help";
-
     for (const meta of groupMetas) {
-      await messagingService.sendMessage(meta.id, {"text": joinMessage});
+      let group = await groupRepository.getGroup(meta.id);
+      if (!group) {
+        try {
+          group = await groupRepository.createBasicGroup(meta.id);
+        } catch (err) {
+          group = await groupRepository.fetchGroup(meta.id);
+        }
+      }
+
+      if (!group) return;
+
+      const joinMessage = "**Disclaimer**\
+      \nThis bot is handled and managed by Ori Harel.\
+      \nAs such, he poses the ability to see the messages in this chat.\
+      \nHe does not plan to but the possibility is there.\
+      \nIf you are not keen with this, do not send the bot messages.\
+      \nEnjoy my bot! Get started using: >>help";
+      await messagingService.sendMessage(meta.id, { "text": joinMessage });
+      await groupRepository.updateGroupDB(group.model.jid, {sentDisclaimer: true});
     }
   });
 }
 
 function registerListeners() {
   listenerHandler.registerListener(new UserUpdaterListener(userRepository));
+  listenerHandler.registerListener(new GroupUpdaterListener(groupRepository));
 }
 
 function registerCommands() {

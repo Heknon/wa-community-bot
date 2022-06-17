@@ -1,4 +1,4 @@
-import { isJidGroup, WASocket } from "@adiwajshing/baileys";
+import { isJidGroup, jidNormalizedUser, WASocket } from "@adiwajshing/baileys";
 
 export async function getUserPrivilegeLevel(client: WASocket, jid: string, id: string): Promise<number> {
     if (!isJidGroup(jid)) return -1;
@@ -27,10 +27,15 @@ export async function getBotPrivilegeLevel(client: WASocket, jid: string): Promi
     return groupAdminMap[getClientID(client)] ?? 0
 }
 
-export function normalizeUserId(id: string): string {
-    return id.split(":")[0] + "@s.whatsapp.net";
+export function normalizeJid(jid?: string): string | undefined {
+    if (!jid) return;
+    try {
+        return jidNormalizedUser(jid);
+    } catch (err) {
+        return undefined;
+    }
 }
 
 export function getClientID(client: WASocket): string {
-    return normalizeUserId(client.user.id);
+    return normalizeJid(client.user.id)!;
 }

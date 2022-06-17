@@ -1,7 +1,7 @@
 import {
     WASocket,
 } from "@adiwajshing/baileys";
-import { messagingService, userRepository } from "../../constants/services";
+import { messagingService } from "../../constants/services";
 import MessageModel from "../../database/models/message_model";
 import { PrivilegeLevel } from "../../database/models/user/privilege_level";
 import { ICommand } from "../../core/command/command";
