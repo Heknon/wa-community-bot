@@ -35,7 +35,7 @@ export class WhatsAppBot {
 
 	public start() {
 		this.client = makeWASocket({
-			logger: P({ level: 'debug' }),
+			logger: P({ level: 'fatal' }),
 			printQRInTerminal: true,
 			auth: this.state,
 			browser: ["LOCAL - BOT", "Chrome", "4.0.0"],

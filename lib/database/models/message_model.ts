@@ -60,7 +60,6 @@ export default class MessageModel {
     }
 
     public static async fromWAMessage(message: WAMessage, metadata: MessageMetadata | undefined = undefined): Promise<MessageModel> {
-        console.log(`JID: ${message.key.remoteJid!}`)
         const fromGroup = isJidGroup(message.key.remoteJid!);
         const fromMe = fromGroup ? message.key.participant! == WhatsAppBot.currentClientId : message.key.fromMe;
         const from = fromMe ? WhatsAppBot.currentClientId : fromGroup ? message.key.participant! : message.key.remoteJid!;

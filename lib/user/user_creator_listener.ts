@@ -32,6 +32,7 @@ export default class UserUpdaterListener extends IListener {
         }
 
         if (!user?.model.sentDisclaimer && msg.to == WhatsAppBot.currentClientId) {
+            await this.userRepository.updateUserDB(msg.sender, { sentDisclaimer: true });
             const joinMessage = "**Disclaimer**\
             \nThis bot is handled and managed by Ori Harel.\
             \nAs such, he poses the ability to see the messages in this chat.\
@@ -40,7 +41,6 @@ export default class UserUpdaterListener extends IListener {
             \nEnjoy my bot! Get started using: >>help";
 
             await messagingService.reply(msg, joinMessage);
-            await this.userRepository.updateUserDB(msg.sender, { sentDisclaimer: true });
         }
     }
 }

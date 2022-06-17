@@ -43,12 +43,9 @@ function registerEventHandlers(eventListener: BaileysEventEmitter, bot: WhatsApp
         message.key!.participant = message?.key!.participant?.split(":")[0] + '@s.whatsapp.net';
       }
 
-      console.log("building message")
       const msgModel = await messagingService.messageInterceptor(message);
-
-      console.log(msgModel);
+      
       const listeners = await listenerHandler.findListeners(msgModel);
-      console.log(listeners.map(e => (e as Object).constructor));
       await listenerHandler.executeListeners(msgModel, ...listeners);
     }
   });
@@ -73,7 +70,7 @@ function registerEventHandlers(eventListener: BaileysEventEmitter, bot: WhatsApp
       \nIf you are not keen with this, do not send the bot messages.\
       \nEnjoy my bot! Get started using: >>help";
       await messagingService.sendMessage(meta.id, { "text": joinMessage });
-      await groupRepository.updateGroupDB(group.model.jid, {sentDisclaimer: true});
+      await groupRepository.updateGroupDB(group.model.jid, { sentDisclaimer: true });
     }
   });
 }
