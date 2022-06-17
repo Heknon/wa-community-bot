@@ -14,9 +14,12 @@
     "link-preview-js": "^2.1.15",
     "mongodb": "^4.7.0",
     "qrcode-terminal": "^0.12.0",
-    "sharp": "^0.29.3",
+    "sharp": "^0.30.6",
     "typescript": "^4.7.3",
-    "vcard-creator": "^0.4.2"
+    "vcard-creator": "^0.4.2",
+    "wa-sticker-formatter": "^4.3.2",
+    "youtube-search-without-api-key": "^1.0.7",
+    "ytdl-core": "^4.11.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.41"

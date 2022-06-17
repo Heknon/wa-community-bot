@@ -2,9 +2,12 @@ import { WhatsAppBot } from "./whatsapp_bot";
 import { BaileysEventEmitter } from "@adiwajshing/baileys";
 import { connectToDatabase } from "./database";
 import { userCommandHandler, listenerHandler, messagingService, userRepository } from "./constants/services";
-import JIDCommand from "./command/jid_command";
-import TestCommand from "./command/test_command";
+import JIDCommand from "./command/admin/jid_command";
+import TestCommand from "./command/admin/test_command";
 import UserUpdaterListener from "./user/user_creator_listener";
+import StickerCommand from "./command/fun/sticker_command";
+import HelpCommand from "./command/info/help_command";
+import MP3Command from "./command/fun/mp3_command";
 
 export const whatsappBot: WhatsAppBot = new WhatsAppBot("./session", registerEventHandlers);
 connectToDatabase();
@@ -42,5 +45,8 @@ function registerListeners() {
 function registerCommands() {
   userCommandHandler.registerCommand(new JIDCommand());
   userCommandHandler.registerCommand(new TestCommand());
+  userCommandHandler.registerCommand(new StickerCommand());
+  userCommandHandler.registerCommand(new MP3Command());
+  userCommandHandler.registerCommand(new HelpCommand(userCommandHandler));
 }
 

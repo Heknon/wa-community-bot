@@ -61,7 +61,7 @@ export async function extractMessageMediaStream(message: proto.IWebMessageInfo) 
     );
   } else if (message.message?.audioMessage) {
     return downloadContentFromMessage(
-      message.message?.documentMessage as DownloadableMessage,
+      message.message?.audioMessage as DownloadableMessage,
       "audio"
     );
   }

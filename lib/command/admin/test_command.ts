@@ -2,10 +2,10 @@ import {
     AnyMessageContent,
     WASocket,
 } from "@adiwajshing/baileys";
-import { messagingService } from "../constants/services";
-import { ICommand } from "../core/command/command";
-import MessageModel from "../database/models/message_model";
-import { PrivilegeLevel } from "../database/models/user/privilege_level";
+import { messagingService } from "../../constants/services";
+import { ICommand } from "../../core/command/command";
+import MessageModel from "../../database/models/message_model";
+import { PrivilegeLevel } from "../../database/models/user/privilege_level";
 
 
 export default class TestCommand extends ICommand {

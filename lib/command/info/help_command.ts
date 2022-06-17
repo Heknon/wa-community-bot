@@ -1,11 +1,11 @@
 import {
     WASocket,
 } from "@adiwajshing/baileys";
-import { messagingService, userRepository } from "../constants/services";
-import MessageModel from "../database/models/message_model";
-import { PrivilegeLevel } from "../database/models/user/privilege_level";
-import { ICommand } from "../core/command/command";
-import { CommandHandler } from "../core/command/command_handler";
+import { messagingService, userRepository } from "../../constants/services";
+import MessageModel from "../../database/models/message_model";
+import { PrivilegeLevel } from "../../database/models/user/privilege_level";
+import { ICommand } from "../../core/command/command";
+import { CommandHandler } from "../../core/command/command_handler";
 
 
 export default class HelpCommand extends ICommand {

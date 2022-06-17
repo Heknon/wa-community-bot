@@ -6,7 +6,7 @@ export abstract class ICommand extends Privileged {
   command?: string;
   help?: string;
 
-  execute(client: WASocket, message: MessageModel, body?: string): Promise<void> | void {
+  execute(client: WASocket, message: MessageModel, body?: string): Promise<any> | any {
     throw new Error("Not implemented");
   }
 }

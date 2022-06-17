@@ -11,7 +11,7 @@ export default class MessageModel {
     public content: string | undefined | null;
     public media: Buffer | undefined;
     public mediaType: MediaType | undefined; 
-    public reply: MessageModel | undefined | null;
+    public quote: MessageModel | undefined | null;
     public from: string;
     public to: string;
     public metadata: MessageMetadata | undefined | null;
@@ -35,7 +35,7 @@ export default class MessageModel {
         this.content = content;
         this.media = media;
         this.mediaType = mediaType;
-        this.reply = reply;
+        this.quote = reply;
         this.from = from;
         this.to = to;
         this.metadata = metadata;
@@ -88,7 +88,7 @@ export default class MessageModel {
             "content": this.content,
             "media": this.media,
             'media_type': this.mediaType,
-            "reply": this.reply?.toMap(),
+            "reply": this.quote?.toMap(),
             "from": this.from,
             "to": this.to,
             'metadata': this.metadata?.toMap()
