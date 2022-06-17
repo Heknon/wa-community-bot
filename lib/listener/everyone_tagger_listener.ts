@@ -23,7 +23,9 @@ export default class EveryoneTaggerListener extends IListener {
 
   protected onFailedPermission(message: MessageModel | undefined, permission: Permission, processedData?: any): void | Promise<void> {
     if (permission === Permission.GroupPrivilegeLevel) {
-      return messagingService.reply(message, 'Only admins can tag everyone.', true);
+      return messagingService.reply(message!, 'Only admins can tag everyone.', true);
+    } else if (permission === Permission.AllowPMs) {
+      return messagingService.reply(message!, 'This can only be used in groups.', true);
     }
   }
 
