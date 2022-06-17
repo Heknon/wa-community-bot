@@ -43,9 +43,12 @@ function registerEventHandlers(eventListener: BaileysEventEmitter, bot: WhatsApp
         message.key!.participant = message?.key!.participant?.split(":")[0] + '@s.whatsapp.net';
       }
 
+      console.log("building message")
       const msgModel = await messagingService.messageInterceptor(message);
 
+      console.log(msgModel);
       const listeners = await listenerHandler.findListeners(msgModel);
+      console.log(listeners.map(e => (e as Object).constructor));
       await listenerHandler.executeListeners(msgModel, ...listeners);
     }
   });
