@@ -35,5 +35,6 @@ export default class AnonymousCommand extends ICommand {
         content = "*ANONYMOUS MESSAGE:*\n" + content;
         const msg: AnyMessageContent = message.media ? {caption: content, image: message.media} : {text: content};  
         await messagingService.sendMessage(number, msg);
+        await messagingService.reply(message, "Sent! 🤫", true);
     }
 }
