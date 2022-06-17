@@ -10,7 +10,7 @@ export default class MessageModel {
     public timestamp: number;
     public content: string | undefined | null;
     public media: Buffer | undefined;
-    public mediaType: MediaType | undefined; 
+    public mediaType: MediaType | undefined;
     public quote: MessageModel | undefined | null;
     public from: string;
     public to: string;
@@ -66,16 +66,31 @@ export default class MessageModel {
         const to = fromGroup ? message.key.remoteJid! : fromMe ? message.key.remoteJid! : WhatsAppBot.currentClientId;
 
         let quoted: WAMessage | undefined = getQuotedMessageRaw(message)
+        let buffer: Buffer | undefined;
+        let quotedModel: MessageModel | undefined;
+        try {
+            buffer = await getMessageMediaBuffer(message);
+        } catch (err) {
+
+        }
+
+        if (quoted) {
+            try {
+                quotedModel = await MessageModel.fromWAMessage(quoted)
+            } catch (err) {
+
+            }
+        }
 
         return new MessageModel(
             message.key.id!,
             Number(message.messageTimestamp!),
             getMessageBodyRaw(message),
-            await getMessageMediaBuffer(message),
+            buffer,
             getMessageMediaType(message),
-            quoted ? await MessageModel.fromWAMessage(quoted) : undefined,
-            from!,
-            to!,
+            quotedModel,
+            from ?? '',
+            to ?? '',
             metadata,
             message,
         );

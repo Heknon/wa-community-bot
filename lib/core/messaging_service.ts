@@ -65,7 +65,7 @@ export default class MessagingService {
 
     private async _internalSendMessage(recipient: string, content: AnyMessageContent, options?: MiscMessageGenerationOptions, metadata?: MessageMetadata): Promise<MessageModel> {
         assert(this.client, "Client must be set using setClient() method!");
-
+        
         try {
             const response = await this.client!.sendMessage(recipient, content, options);
 
