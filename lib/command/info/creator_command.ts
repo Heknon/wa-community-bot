@@ -1,4 +1,5 @@
 import {
+    AnyMessageContent,
     generateWAMessageFromContent,
     jidDecode,
     WASocket,
@@ -17,17 +18,21 @@ export default class CreatorCommand extends ICommand {
             return await messagingService.reply(message, "You must have some content you want to send in the message.", true)
         }
 
-        await messagingService.sendMessage(process.env.CREATOR_PHONE!, {text: `You received a message from:`})
+        await messagingService.sendMessage(process.env['CREATOR_JID']!, {text: `You received a message from:`})
         const vcard = new VCard()
         vcard.addName(undefined, message.raw?.pushName ?? 'Bot User');
         vcard.setProperty('TEL', `TEL;type=CELL;waid=${jidDecode(message.from).user}`, `+${jidDecode(message.from).user}`)
-        await messagingService.sendMessage(process.env.CREATOR_PHONE!, {
+        await messagingService.sendMessage(process.env['CREATOR_JID']!, {
             contacts: {
                 contacts: [
                     { vcard: vcard.toString(), displayName: message.raw?.pushName ?? 'Bot User' }
                 ]
             }
         });
-        await client.relayMessage(process.env.CREATOR_PHONE!, message.raw?.message!, { messageId: message.id, participant: message.from });
+
+        
+
+        const msg: AnyMessageContent = message.media ? {caption: body ?? '', image: message.media} : {text: body ?? ''};
+        await messagingService.sendMessage(process.env['CREATOR_JID']!, msg);
     }
 }

@@ -6,7 +6,7 @@ import { PrivilegeLevel } from "../../database/models/user/privilege_level";
 
 export default class AnonymousCommand extends ICommand {
     command: string = "anonymous";
-    help: string = 'Contact the creator of the bot (Reporting bugs)';
+    help: string = 'Anonymously message someone through the bot';
 
     privilegeLevel: PrivilegeLevel = PrivilegeLevel.Membership;
 
@@ -31,7 +31,7 @@ export default class AnonymousCommand extends ICommand {
             return await messagingService.reply(message, "This number isn't on WhatsApp", true);
         }
 
-        const msg: AnyMessageContent = message.media ? {caption: content, image: message.media} : {text: content};
+        const msg: AnyMessageContent = message.media ? {caption: content, image: message.media} : {text: content};  
         await messagingService.sendMessage(process.env.CREATOR_PHONE!, msg);
     }
 }
