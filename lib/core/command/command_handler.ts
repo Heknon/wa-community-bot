@@ -1,10 +1,11 @@
-import { WASocket} from "@adiwajshing/baileys";
+import { WASocket } from "@adiwajshing/baileys";
 import { assert } from "console";
 import MessageModel from "../../database/models/message_model";
-import {ListenerHandler} from "../listener/listener_handler";
+import { ListenerHandler } from "../listener/listener_handler";
 import { command_prefix } from "../config";
-import {ICommand} from "./command";
+import { ICommand } from "./command";
 import CommandListener from "./command_listener";
+import { messagingService } from "../../constants/services";
 
 export class CommandHandler {
   public commands: Array<ICommand> = [];
@@ -56,7 +57,11 @@ export class CommandHandler {
       if (!(await command.hasPermission(message))) continue;
 
       const body = message?.content?.slice(this.prefix.length + command.command.length + 1);
-      await command.execute(this.client!, message, body);
+      try {
+        await command.execute(this.client!, message, body);
+      } catch (err) {
+        await messagingService.reply(message, 'An error occurred while sending the message.')
+      }
     }
   }
 
