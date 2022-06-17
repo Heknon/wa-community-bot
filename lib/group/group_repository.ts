@@ -39,9 +39,10 @@ export default class GroupRepository {
         jid = jidNormalizedUser(jid);
 
         if (!jid || !this.groups.has(jid)) return;
-        const update = {};
+        const update = new Map();
         if (membership) update['membership'] = membership;
         if (sentDisclaimer) update['sent_disclaimer'] = sentDisclaimer;
+        if (!update || update.size === 0) return this.groups[jid];
 
         const res = await groupsCollection.findOneAndUpdate({ jid }, { "$set": update }, { returnDocument: ReturnDocument.AFTER });
         if (res.ok) {

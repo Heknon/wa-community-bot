@@ -49,10 +49,20 @@ export default class KickCommand extends ICommand {
             return await messagingService.reply(message, errorMessage, true);
         }
 
-        client.groupParticipantsUpdate(message.to, kickList, 'remove').then(async res => {
-            await messagingService.reply(message, "Success 🎉🥳🥳", true);
-        }).catch(err => {
-            console.error(err);
-        });
+        let failedList: Array<string> = [];
+        for (const number of kickList) {
+            try {
+                await client.groupParticipantsUpdate(message.to, [number], 'remove')
+            } catch (error) {
+                console.error(error);
+                failedList.push(number)
+            }
+        }
+
+        if (failedList.length > 0) {
+            return messagingService.reply(message, `Failed 😢\nFailed to kick: ${failedList.join(', ')}`, true);
+        }
+
+        await messagingService.reply(message, "Success 🎉🥳🥳", true);
     }
 }

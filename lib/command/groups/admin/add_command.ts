@@ -1,4 +1,4 @@
-import { isJidGroup, WASocket } from "@adiwajshing/baileys";
+import { isJidGroup, isJidUser, WASocket } from "@adiwajshing/baileys";
 import { messagingService } from "../../../constants/services";
 import { ICommand } from "../../../core/command/command";
 import MessageModel from "../../../database/models/message_model";
@@ -27,7 +27,7 @@ export default class AddCommand extends ICommand {
         let vcards = message.raw.message?.extendedTextMessage?.contextInfo?.quotedMessage?.contactMessage?.vcard
             || message.raw.message?.extendedTextMessage?.contextInfo?.quotedMessage?.contactsArrayMessage?.contacts!.map((contact) => contact.vcard) || [];
 
-        if (vcards) {
+        if (vcards.length > 0) {
             const allNumbers = new Set<string>();
             if (vcards && typeof vcards == typeof "") {
                 vcards = [vcards as string]
@@ -35,19 +35,24 @@ export default class AddCommand extends ICommand {
 
             (vcards as string[]).forEach(async (vcard) => {
                 const vc = vCard.parse(vcard)
-                const numbers = vc.tel.map((telObject) => (telObject.meta.waid + "@s.whatsapp.net"))
-                const onWhatsapp = await client.onWhatsApp(...numbers);
-                onWhatsapp.forEach(element => {
-                    if (element.exists) allNumbers.add(element.jid);
+                const numbers = vc.tel.map((telObject) => {
+                    return (telObject.meta['waid'] + "@s.whatsapp.net")
                 });
+
+                numbers.forEach(n => allNumbers.add(n));
             });
 
-            const numbersList = Array.from(allNumbers);
-
-            try {
-                await client.groupParticipantsUpdate(message.to, numbersList, 'add')
-            } catch (err) {
-                return messagingService.reply(message, "Failed 😢", true);
+            let failedList: Array<string> = [];
+            for (const number of allNumbers) {
+                try {
+                    await client.groupParticipantsUpdate(message.to, [number], 'add')
+                } catch (error) {
+                    console.error(error);
+                    failedList.push(number)
+                }
+            }
+            if (failedList.length > 0) {
+                return messagingService.reply(message, `Failed 😢\nFailed to add: ${failedList.join(', ')}`, true);
             }
 
             return messagingService.reply(message, "Success 🎊", true);
@@ -60,16 +65,23 @@ export default class AddCommand extends ICommand {
         const numbers = [...body.matchAll(/\d+/gim)].map(num => {
             let number = parseInt(num[0]).toString();
             if (number.startsWith("5")) {
-                number += '972';
+                number = '972' + number;
             }
+            if (!number.endsWith("@s.whatsapp.net")) number += "@s.whatsapp.net";
             return number;
-        });
-        const onWhatsappNumbers = (await client.onWhatsApp(...numbers)).filter(res => res.exists).map(res => res.jid);
+        }).filter(num => isJidUser(num));
 
-        try {
-            await client.groupParticipantsUpdate(message.to, onWhatsappNumbers, 'add')
-        } catch (err) {
-            return messagingService.reply(message, "Failed 😢", true);
+        let failedList: Array<string> = [];
+        for (const number of numbers) {
+            try {
+                await client.groupParticipantsUpdate(message.to, [number], 'add')
+            } catch (error) {
+                console.error(error);
+                failedList.push(number)
+            }
+        }
+        if (failedList.length > 0) {
+            return messagingService.reply(message, `Failed 😢\nFailed to add: ${failedList.join(', ')}`, true);
         }
 
         return messagingService.reply(message, "Success 🎊", true);
