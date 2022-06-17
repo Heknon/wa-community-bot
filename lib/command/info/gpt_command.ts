@@ -39,9 +39,8 @@ export default class GptCommand extends ICommand {
             presence_penalty: 0,
         }).then((response) => {
             const blank = "Couldn't think of anything\nI'm blank!";
-            console.log(response.data.choices);
             const text = response.data.choices ? response.data.choices[0].text ?? blank : blank;
-            messagingService.reply(message, text, true);
+            messagingService.reply(message, text.trim(), true);
         }).catch((err) => {
             messagingService.reply(message, "That's way too long for me", true);
         });

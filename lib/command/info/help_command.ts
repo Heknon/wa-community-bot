@@ -10,7 +10,7 @@ import { CommandHandler } from "../../core/command/command_handler";
 
 export default class HelpCommand extends ICommand {
     command: string = "help";
-    privilegeLevel = PrivilegeLevel.Moderator;
+    help: string = "This message"
 
     private commandHandler: CommandHandler;
 
@@ -25,6 +25,7 @@ export default class HelpCommand extends ICommand {
 
         for (const command of allCommands) {
             if (!command.command) continue;
+            if (command.command == this.command) continue; 
 
             if (!(await command.hasPermission(message))) continue;
 

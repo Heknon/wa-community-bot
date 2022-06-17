@@ -10,6 +10,7 @@ import HelpCommand from "./command/info/help_command";
 import MP3Command from "./command/fun/mp3_command";
 import GptCommand from "./command/info/gpt_command";
 import LmgtfyCommand from "./command/fun/lmgtfy_command";
+import GtfoCommand from "./command/groups/admin/gtfo_command";
 
 export const whatsappBot: WhatsAppBot = new WhatsAppBot("./session", registerEventHandlers);
 connectToDatabase();
@@ -38,6 +39,21 @@ function registerEventHandlers(eventListener: BaileysEventEmitter, bot: WhatsApp
       await listenerHandler.executeListeners(msgModel, ...listeners);
     }
   });
+
+  eventListener?.on("groups.upsert", async (groupMetas) => {
+    const joinMessage = "**Disclaimer**\n\
+    This bot is handled and managed by Ori Harel.\n\
+    As such, he poses the ability to see the messages in this group chat.\n\
+    He does not plan to but the possibility is there.\n\
+    If you are not keen with this, please remove the bot.\n\n\
+    You can remove the bot by having a group admin send:\n\
+    >>gtfo\n\
+    Enjoy my bot! Get started using: >>help";
+
+    for (const meta of groupMetas) {
+      await messagingService.sendMessage(meta.id, {"text": joinMessage});
+    }
+  });
 }
 
 function registerListeners() {
@@ -51,6 +67,7 @@ function registerCommands() {
   userCommandHandler.registerCommand(new MP3Command());
   userCommandHandler.registerCommand(new GptCommand());
   userCommandHandler.registerCommand(new LmgtfyCommand());
+  userCommandHandler.registerCommand(new GtfoCommand());
   userCommandHandler.registerCommand(new HelpCommand(userCommandHandler));
 }
 

@@ -11,6 +11,8 @@ import { ICommand } from "../../core/command/command";
 
 export default class JIDCommand extends ICommand {
     command: string = "jid";
+    help: string = 'Debugging tool for getting chat JID';
+
     privilegeLevel = PrivilegeLevel.Moderator;
 
     async execute(client: WASocket, message: MessageModel, body?: string) {
