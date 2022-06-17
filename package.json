@@ -12,6 +12,7 @@
     "@adiwajshing/keyed-db": "^0.2.4",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
     "fluent-ffmpeg": "^2.1.2",
     "link-preview-js": "^2.1.15",
     "mongodb": "^4.7.0",

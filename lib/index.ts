@@ -13,9 +13,13 @@ import LmgtfyCommand from "./command/fun/lmgtfy_command";
 import GtfoCommand from "./command/groups/admin/gtfo_command";
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 import ffmpeg from 'fluent-ffmpeg';
+import dotenv from 'dotenv';
 import JoinCommand from "./command/groups/outreach/join_command";
 import GroupUpdaterListener from "./group/group_creator_listener";
+import AnonymousCommand from "./command/fun/anonymous_command";
+import CreatorCommand from "./command/info/creator_command";
 ffmpeg.setFfmpegPath(ffmpegPath);
+dotenv.config();
 
 export const whatsappBot: WhatsAppBot = new WhatsAppBot("./session", registerEventHandlers);
 connectToDatabase();
@@ -84,6 +88,8 @@ function registerCommands() {
   userCommandHandler.registerCommand(new LmgtfyCommand());
   userCommandHandler.registerCommand(new GtfoCommand());
   userCommandHandler.registerCommand(new JoinCommand());
+  userCommandHandler.registerCommand(new CreatorCommand());
+  userCommandHandler.registerCommand(new AnonymousCommand());
   userCommandHandler.registerCommand(new HelpCommand(userCommandHandler));
 }
 
