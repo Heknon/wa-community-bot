@@ -21,7 +21,8 @@ export default class PromoteCommand extends ICommand {
         const level = fullEnumSearch(PrivilegeLevel, splitBody?.shift() ?? '');
 
         if (!level) {
-            const enumKeys = Object.keys(PrivilegeLevel);
+            let enumKeys = Object.keys(PrivilegeLevel);
+            enumKeys = enumKeys.slice(enumKeys.length / 2)
             const enumValues = Object.values(PrivilegeLevel);
 
             const privilegesText = Array.from(Array(enumKeys.length).keys())
