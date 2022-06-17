@@ -60,6 +60,7 @@ export class CommandHandler {
       try {
         await command.execute(this.client!, message, body);
       } catch (err) {
+        console.error(err);
         await messagingService.reply(message, 'An error occurred while sending the message.')
       }
     }

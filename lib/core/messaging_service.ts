@@ -72,6 +72,7 @@ export default class MessagingService {
             if (this.metadataEnabled) this.metadataAssignment[response.key.id!] = metadata;
             return MessageModel.fromWAMessage(response, metadata);
         } catch (err) {
+            console.error(err);
             const response = await this.client!.sendMessage(recipient, {'text': "An error occurred while sending the message."}, options);
             return MessageModel.fromWAMessage(response, metadata);
         }
