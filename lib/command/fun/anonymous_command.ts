@@ -32,6 +32,6 @@ export default class AnonymousCommand extends ICommand {
         }
 
         const msg: AnyMessageContent = message.media ? {caption: content, image: message.media} : {text: content};  
-        await messagingService.sendMessage(process.env.CREATOR_PHONE!, msg);
+        await messagingService.sendMessage(process.env['CREATOR_JID']!, msg);
     }
 }

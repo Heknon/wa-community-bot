@@ -18,6 +18,7 @@ import JoinCommand from "./command/groups/outreach/join_command";
 import GroupUpdaterListener from "./group/group_creator_listener";
 import AnonymousCommand from "./command/fun/anonymous_command";
 import CreatorCommand from "./command/info/creator_command";
+import KickCommand from "./command/groups/admin/kick_command";
 ffmpeg.setFfmpegPath(ffmpegPath);
 dotenv.config();
 
@@ -90,6 +91,7 @@ function registerCommands() {
   userCommandHandler.registerCommand(new JoinCommand());
   userCommandHandler.registerCommand(new CreatorCommand());
   userCommandHandler.registerCommand(new AnonymousCommand());
+  userCommandHandler.registerCommand(new KickCommand());
   userCommandHandler.registerCommand(new HelpCommand(userCommandHandler));
 }
 
