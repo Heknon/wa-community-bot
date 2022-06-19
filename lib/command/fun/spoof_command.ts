@@ -13,7 +13,7 @@ export default class SpoofCommand extends ICommand {
             return await this.error(message);
         }
 
-        body = body.replace("״", "\"")
+        body = body.replace(/״/gmi, '"')
         const splitBody = body?.split(' ');
         const mentioned = splitBody?.shift()?.slice(1);
         const quotedPart = splitBody?.join(' ');
