@@ -4,6 +4,6 @@ export function fullEnumSearch(e: object, query: string) {
 
     const index = properties.indexOf(query);
     const routineType = index >= 0 ? index : NaN;
-    const number = Number.parseInt(query) || routineType;
-    return number
+    const number = Number.parseInt(query) ?? routineType;
+    return number ?? NaN
 }

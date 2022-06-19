@@ -61,7 +61,7 @@ export default class HelpCommand extends ICommand {
             sections.set('misc', { title: 'MISC', rows: new Array<proto.IRow>() });
         }
 
-        sections['misc'].rows?.push({ title: '@everyone', description: 'Tag everyone in the group', rowId: "HELP_COMMAND-" + id, })
+        sections.get('misc')?.rows?.push({ title: '@everyone', description: 'Tag everyone in the group', rowId: "HELP_COMMAND-" + id, })
         helpMessage += "מקווה שעזרתי ✌\n";
         helpMessage += "~bot";
 
