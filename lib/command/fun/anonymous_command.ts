@@ -12,7 +12,7 @@ export default class AnonymousCommand extends ICommand {
 
     privilegeLevel: PrivilegeLevel = PrivilegeLevel.Membership;
 
-    override async onFailedPermission(message: MessageModel | undefined, permission: Permission, processedData?: any) {
+    async onFailedPermission(message: MessageModel | undefined, permission: Permission, processedData?: any) {
         if (permission == Permission.PrivilegeLevel && message) {
             return messagingService.reply(message, 'A membership is needed to use this command. Sorry!', true)
         }
