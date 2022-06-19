@@ -12,11 +12,6 @@ export default class AnonymousCommand extends ICommand {
 
     privilegeLevel: PrivilegeLevel = PrivilegeLevel.Membership;
 
-    async onFailedPermission(message: MessageModel | undefined, permission: Permission, processedData?: any) {
-        if (permission == Permission.PrivilegeLevel && message) {
-            return messagingService.reply(message, 'A membership is needed to use this command. Sorry!', true)
-        }
-    }
 
     async execute(client: WASocket, message: MessageModel, body?: string) {
         if (!message.media && !body) {
