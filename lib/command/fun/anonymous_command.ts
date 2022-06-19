@@ -1,6 +1,7 @@
 import { AnyMessageContent, WASocket } from "@adiwajshing/baileys";
 import { messagingService } from "../../constants/services";
 import { ICommand } from "../../core/command/command";
+import { Permission } from "../../core/privileged";
 import MessageModel from "../../database/models/message_model";
 import { PrivilegeLevel } from "../../database/models/user/privilege_level";
 
@@ -10,6 +11,12 @@ export default class AnonymousCommand extends ICommand {
     help_category: string = 'Fun';
 
     privilegeLevel: PrivilegeLevel = PrivilegeLevel.Membership;
+
+    override async onFailedPermission(message: MessageModel | undefined, permission: Permission, processedData?: any) {
+        if (permission == Permission.PrivilegeLevel && message) {
+            return messagingService.reply(message, 'A membership is needed to use this command. Sorry!', true)
+        }
+    }
 
     async execute(client: WASocket, message: MessageModel, body?: string) {
         if (!message.media && !body) {
