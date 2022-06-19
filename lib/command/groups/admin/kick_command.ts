@@ -8,7 +8,7 @@ import { WhatsAppBot } from "../../../whatsapp_bot";
 
 export default class KickCommand extends ICommand {
     command: string = "kick";
-    help: string = "Kick someone from the group";
+    help: string = "Kick someone from the group (>>kick @tag)";
     help_category: string = 'Group Admin';
 
     allowPMs: boolean = false;

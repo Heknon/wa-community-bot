@@ -10,7 +10,7 @@ import { wait } from "../../utils/async_utils";
 
 export default class MP3Command extends ICommand {
   command: string = "mp3";
-  help: string = "Downloads an MP3 of a YouTube video"
+  help: string = "Downloads an MP3 of a YouTube video (>>mp3 video name)"
   help_category: string = 'Fun';
 
   downloading_list = {}
