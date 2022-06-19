@@ -53,32 +53,32 @@ export default abstract class Privileged {
 
     }
 
-    async hasPermission(message: MessageModel | undefined): Promise<boolean> {
+    async hasPermission(message: MessageModel | undefined, callFailed: boolean = true): Promise<boolean> {
         if (!this.messageNeeded && !message) return true;
 
         if (!message) {
-            await this.onFailedPermission(undefined, Permission.MessageNeeded, undefined);
+            if (callFailed) await this.onFailedPermission(undefined, Permission.MessageNeeded, undefined);
             return false;
         }
 
         if (!this.allowGroups && isJidGroup(message.raw?.key.remoteJid!)) {
-            await this.onFailedPermission(message, Permission.AllowGroups, message.raw?.key.remoteJid);
+            if (callFailed) await this.onFailedPermission(message, Permission.AllowGroups, message.raw?.key.remoteJid);
             return false;
         }
 
         if (!this.allowPMs && isJidUser(message.raw?.key.remoteJid!)) {
-            await this.onFailedPermission(message, Permission.AllowPMs, message.raw?.key.remoteJid);
+            if (callFailed) await this.onFailedPermission(message, Permission.AllowPMs, message.raw?.key.remoteJid);
             return false;
         }
 
         if (this.blacklist.length > 0) {
             if (this.blacklist.includes(message.from)) {
-                await this.onFailedPermission(message, Permission.Blacklist, message.from);
+                if (callFailed) await this.onFailedPermission(message, Permission.Blacklist, message.from);
                 return false;
             }
 
             if (isJidGroup(message.to) && this.blacklist.includes(message.to)) {
-                await this.onFailedPermission(message, Permission.Blacklist, message.to);
+                if (callFailed) await this.onFailedPermission(message, Permission.Blacklist, message.to);
                 return false;
             }
         }
@@ -86,7 +86,7 @@ export default abstract class Privileged {
         if (isJidGroup(message.to) && this.groupPrivilegeLevel > 0) {
             const level = await getUserPrivilegeLevel(whatsappBot.client!, message.to, message.from);
             if (level < this.groupPrivilegeLevel) {
-                await this.onFailedPermission(message, Permission.GroupPrivilegeLevel, level);
+                if (callFailed) await this.onFailedPermission(message, Permission.GroupPrivilegeLevel, level);
                 return false;
             }
         }
@@ -94,14 +94,14 @@ export default abstract class Privileged {
 
         const user = await userRepository.getUser(message.sender);
         if (!user && this.privilegeLevel > 0 || (user?.model.privilegeLevel ?? 0) < this.privilegeLevel) {
-            await this.onFailedPermission(message, Permission.PrivilegeLevel, user);
+            if (callFailed) await this.onFailedPermission(message, Permission.PrivilegeLevel, user);
             return false;
         }
 
         if (isJidGroup(message.to)) {
             const group = await groupRepository.getGroup(message.to);
             if ((group?.model.membership ?? 0) < this.groupMembershipLevel) {
-                await this.onFailedPermission(message, Permission.GroupMembershipLevel, group);
+                if (callFailed) await this.onFailedPermission(message, Permission.GroupMembershipLevel, group);
                 return false;
             }
         }

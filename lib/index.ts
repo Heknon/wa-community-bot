@@ -23,6 +23,7 @@ import AddCommand from "./command/groups/admin/add_command";
 import SpoofCommand from "./command/fun/spoof_command";
 import EveryoneTaggerListener from "./listener/everyone_tagger_listener";
 import PromoteCommand from "./command/admin/promote_command";
+import DeleteCommand from "./command/groups/admin/delete_command";
 ffmpeg.setFfmpegPath(ffmpegPath);
 dotenv.config();
 
@@ -105,6 +106,7 @@ function registerCommands() {
   userCommandHandler.registerCommand(new AddCommand());
   userCommandHandler.registerCommand(new SpoofCommand());
   userCommandHandler.registerCommand(new PromoteCommand());
+  userCommandHandler.registerCommand(new DeleteCommand());
   userCommandHandler.registerCommand(new HelpCommand(userCommandHandler));
 }
 

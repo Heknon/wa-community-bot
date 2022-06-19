@@ -49,11 +49,10 @@ export default class UserRepository {
 
         if (!this.users.has(jid)) return;
         const update = new Map();
-        if (pushName) update.set('name', pushName);
-        if (privilegeLevel) update.set('privilege_level', privilegeLevel);
+        if (pushName != undefined) update.set('name', pushName);
+        if (privilegeLevel != undefined) update.set('privilege_level', privilegeLevel);
         if (sentDisclaimer) update.set('sent_disclaimer', sentDisclaimer);
         if (!update || update.size === 0) return this.users[jid];
-
 
         const res = await usersCollection.findOneAndUpdate({ jid }, { "$set": update }, { returnDocument: ReturnDocument.AFTER });
         if (res.ok) {

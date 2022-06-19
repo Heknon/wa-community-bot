@@ -13,6 +13,7 @@ export default class HelpCommand extends ICommand {
     command: string = "help";
     help: string = "This message"
     help_category: string = 'Info';
+    privilegeLevel = PrivilegeLevel.User;
 
     private commandHandler: CommandHandler;
 
@@ -30,7 +31,7 @@ export default class HelpCommand extends ICommand {
             if (!command.command) continue;
             if (command.command == this.command) continue;
 
-            if (!(await command.hasPermission(message))) continue;
+            if (!(await command.hasPermission(message, false))) continue;
 
             if (command.privilegeLevel > PrivilegeLevel.Membership) sendInGroup = false;
             filteredCommands.push(command);
