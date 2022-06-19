@@ -10,6 +10,7 @@ import MessageModel from "../../database/models/message_model";
 export default class LmgtfyCommand extends ICommand {
     command: string = "Lmgtfy";
     help: string = 'Help someone in the most condescending way possible';
+    help_category: string = 'Fun';
 
     private readonly base_link = 'https://lmgtfy.app/?q='
 

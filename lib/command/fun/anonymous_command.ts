@@ -7,6 +7,7 @@ import { PrivilegeLevel } from "../../database/models/user/privilege_level";
 export default class AnonymousCommand extends ICommand {
     command: string = "anonymous";
     help: string = 'Anonymously message someone through the bot';
+    help_category: string = 'Fun';
 
     privilegeLevel: PrivilegeLevel = PrivilegeLevel.Membership;
 

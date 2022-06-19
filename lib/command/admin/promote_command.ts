@@ -13,6 +13,7 @@ import { fullEnumSearch } from "../../utils/enum_utils";
 export default class PromoteCommand extends ICommand {
     command: string = "promote";
     help: string = 'Give a user a certain privilege level';
+    help_category: string = 'System Admin';
 
     privilegeLevel = PrivilegeLevel.Operator;
 

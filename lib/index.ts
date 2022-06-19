@@ -49,6 +49,10 @@ function registerEventHandlers(eventListener: BaileysEventEmitter, bot: WhatsApp
 
       const msgModel = await messagingService.messageInterceptor(message);
 
+      if (message.message?.listResponseMessage?.singleSelectReply?.selectedRowId?.startsWith("HELP_COMMAND")) {
+        return await messagingService.reply(msgModel, 'Please type the command in yourself.', true);
+      }
+
       const listeners = await listenerHandler.findListeners(msgModel);
       await listenerHandler.executeListeners(msgModel, ...listeners);
     }

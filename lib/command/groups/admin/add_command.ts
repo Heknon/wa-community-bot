@@ -10,6 +10,7 @@ import vCard from 'vcard-parser';
 export default class AddCommand extends ICommand {
     command: string = "add";
     help: string = "Add a user to the group using a phone number or vcard";
+    help_category: string = 'Group Admin';
 
     allowPMs: boolean = false;
     groupPrivilegeLevel: GroupPrivilegeLevel = GroupPrivilegeLevel.Admin;

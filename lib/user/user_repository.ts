@@ -52,7 +52,6 @@ export default class UserRepository {
         if (pushName) update.set('name', pushName);
         if (privilegeLevel) update.set('privilege_level', privilegeLevel);
         if (sentDisclaimer) update.set('sent_disclaimer', sentDisclaimer);
-        console.log(update)
         if (!update || update.size === 0) return this.users[jid];
 
 

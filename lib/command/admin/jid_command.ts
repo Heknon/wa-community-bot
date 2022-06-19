@@ -12,6 +12,7 @@ import { ICommand } from "../../core/command/command";
 export default class JIDCommand extends ICommand {
     command: string = "jid";
     help: string = 'Debugging tool for getting chat JID';
+    help_category: string = 'System Admin';
 
     privilegeLevel = PrivilegeLevel.Moderator;
 

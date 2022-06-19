@@ -7,6 +7,7 @@ import { getMessageBody } from "../../../utils/message_utils";
 export default class JoinCommand extends ICommand {
     command: string = "join";
     help: string = "Want me in another group? Use this command! (You can send me DMs too)"
+    help_category: string = 'Groups';
 
     private groupInviteRegex: RegExp = RegExp(/(https?:\/\/)?chat\.whatsapp\.com\/(?:invite\/)?([a-zA-Z0-9_-]{22})/g)
 

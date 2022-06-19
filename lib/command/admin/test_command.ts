@@ -11,6 +11,7 @@ import { PrivilegeLevel } from "../../database/models/user/privilege_level";
 export default class TestCommand extends ICommand {
     command: string = "test";
     privilegeLevel = PrivilegeLevel.Admin;
+    help_category: string = 'System Admin';
 
     async execute(client: WASocket, message: MessageModel, body?: string) {
         if (!message.raw?.key.remoteJid) return;
@@ -66,7 +67,7 @@ export default class TestCommand extends ICommand {
             title: "Amazing boldfaced list title",
             buttonText: "Required, text on the button to view the list",
             sections,
-            templateButtons,
+            
         }
 
         await messagingService.replyAdvanced(message, buttonMessage)

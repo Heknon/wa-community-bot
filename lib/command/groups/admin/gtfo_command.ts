@@ -7,6 +7,7 @@ import { GroupPrivilegeLevel } from "../../../database/models/whatsapp/group_pri
 export default class GtfoCommand extends ICommand {
     command: string = "gtfo";
     help: string = "Kick me out using this command."
+    help_category: string = 'Group Admin';
 
     allowPMs: boolean = false;
     groupPrivilegeLevel: GroupPrivilegeLevel = GroupPrivilegeLevel.Admin;

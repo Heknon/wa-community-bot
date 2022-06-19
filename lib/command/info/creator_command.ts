@@ -1,6 +1,5 @@
 import {
     AnyMessageContent,
-    generateWAMessageFromContent,
     jidDecode,
     WASocket,
 } from "@adiwajshing/baileys";
@@ -11,6 +10,7 @@ import MessageModel from "../../database/models/message_model";
 
 export default class CreatorCommand extends ICommand {
     command: string = "creator";
+    help_category: string = 'Info';
     help: string = 'Contact the creator of the bot (Reporting bugs)';
 
     async execute(client: WASocket, message: MessageModel, body?: string) {
@@ -34,5 +34,6 @@ export default class CreatorCommand extends ICommand {
 
         const msg: AnyMessageContent = message.media ? {caption: body ?? '', image: message.media} : {text: body ?? ''};
         await messagingService.sendMessage(process.env['CREATOR_JID']!, msg);
+        await messagingService.reply(message, 'Forwarded your message to the creator of the bot!');
     }
 }

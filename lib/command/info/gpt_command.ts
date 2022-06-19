@@ -6,7 +6,8 @@ import MessageModel from "../../database/models/message_model";
 
 export default class GptCommand extends ICommand {
     command: string = "gpt";
-    help: string = 'Ask an AI a question'
+    help_category: string = 'Study';
+    help: string = 'Ask an AI a question (This may soon turn into a premium feature)'
 
     configuration: Configuration;
     openai: OpenAIApi;

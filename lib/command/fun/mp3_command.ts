@@ -11,6 +11,8 @@ import { wait } from "../../utils/async_utils";
 export default class MP3Command extends ICommand {
   command: string = "mp3";
   help: string = "Downloads an MP3 of a YouTube video"
+  help_category: string = 'Fun';
+
   downloading_list = {}
 
   async execute(client: WASocket, message: MessageModel, body?: string) {

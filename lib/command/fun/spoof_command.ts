@@ -6,6 +6,7 @@ import MessageModel from "../../database/models/message_model";
 export default class SpoofCommand extends ICommand {
     command: string = "spoof";
     help: string = 'An exploit to spoof a friend\'s message. >>spoof @mention "spoofed message" "bot message"'
+    help_category: string = 'Fun';
 
     async execute(client: WASocket, message: MessageModel, body?: string) {
         if (!body) {

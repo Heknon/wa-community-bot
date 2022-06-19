@@ -13,6 +13,7 @@ import MessageModel from "../../database/models/message_model";
 export default class StickerCommand extends ICommand {
   command: string = "sticker";
   help: string = 'Send along with an image or video to create a sticker';
+  help_category: string = 'Fun';
 
   async execute(client: WASocket, message: MessageModel, body?: string) {
     let messageMedia = message.media ?? message.quote?.media;
