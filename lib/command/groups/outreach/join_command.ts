@@ -27,7 +27,7 @@ export default class JoinCommand extends ICommand {
             });
             await messagingService.reply(message, "Joining the group...", true);
         } catch (e) {
-            await messagingService.reply(message, "Failed to join group.\nUnauthorized.", true);
+            await messagingService.reply(message, "Failed to join group.\nI might've been kicked from it.", true);
         }
     }
 }
