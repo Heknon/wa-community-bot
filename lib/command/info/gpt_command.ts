@@ -34,7 +34,7 @@ export default class GptCommand extends ICommand {
             model: "text-davinci-002",
             prompt: body,
             temperature: 0.7,
-            max_tokens: 3700,
+            max_tokens: 1800,
             top_p: 1,
             frequency_penalty: 0,
             presence_penalty: 0,
