@@ -77,7 +77,7 @@ function registerEventHandlers(eventListener: BaileysEventEmitter, bot: WhatsApp
       \nAs such, he poses the ability to see the messages in this chat.\
       \nHe does not plan to but the possibility is there.\
       \nIf you are not keen with this, do not send the bot messages.\
-      \nEnjoy my bot! Get started using: >>help";
+      \nEnjoy my bot! Get started using: >>help\n\nP.S You can DM the bot.";
       await messagingService.sendMessage(meta.id, { "text": joinMessage });
       await groupRepository.updateGroupDB(group.model.jid, { sentDisclaimer: true });
     }
